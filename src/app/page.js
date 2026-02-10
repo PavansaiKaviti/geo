@@ -1,64 +1,78 @@
-import Image from "next/image";
+"use client";
+
+import { useEffect, useState } from "react";
 import styles from "./page.module.css";
 
 export default function Home() {
+  const [geo, setGeo] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetch("/api/geo")
+      .then((res) => res.json())
+      .then((data) => {
+        setGeo(data);
+        setError(null);
+      })
+      .catch(() => setError("Could not load location"))
+      .finally(() => setLoading(false));
+  }, []);
+
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
         <div className={styles.intro}>
-          <h1>To get started, edit the page.js file.</h1>
+          <h1>Geolocation (Vercel)</h1>
           <p>
-            Looking for a starting point or more instructions? Head over to{" "}
+            This page uses{" "}
             <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+              href="https://vercel.com/kb/guide/geo-ip-headers-geolocation-vercel-functions#using-the-geolocation-helper"
               target="_blank"
               rel="noopener noreferrer"
             >
-              Templates
+              Vercel geo IP headers
             </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
+            via <code>@vercel/functions</code> to show your location. Headers are only set when deployed on Vercel.
           </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+          {loading && <p className={styles.geoStatus}>Loading…</p>}
+          {error && <p className={styles.geoError}>{error}</p>}
+          {!loading && !error && geo && (
+            <div className={styles.geoCard}>
+              <h2>Your location</h2>
+              <dl className={styles.geoList}>
+                {geo.city != null && (
+                  <>
+                    <dt>City</dt>
+                    <dd>{geo.city}</dd>
+                  </>
+                )}
+                {geo.region != null && (
+                  <>
+                    <dt>Region</dt>
+                    <dd>{geo.region}</dd>
+                  </>
+                )}
+                {geo.country != null && (
+                  <>
+                    <dt>Country</dt>
+                    <dd>{geo.country}</dd>
+                  </>
+                )}
+                {geo.latitude != null && geo.longitude != null && (
+                  <>
+                    <dt>Coordinates</dt>
+                    <dd>{geo.latitude}, {geo.longitude}</dd>
+                  </>
+                )}
+              </dl>
+              {!geo.city && !geo.country && (
+                <p className={styles.geoHint}>
+                  No geo data — run this app on Vercel to see your location.
+                </p>
+              )}
+            </div>
+          )}
         </div>
       </main>
     </div>
