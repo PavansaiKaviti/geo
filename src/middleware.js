@@ -6,9 +6,11 @@ export function middleware(request) {
   const country = geo?.country?.toUpperCase();
 
   if (country === "US") {
-    return NextResponse.redirect("https://appl.com", 302);
+    return NextResponse.redirect("https://apple.com", 302);
   }
-
+  if (country === "CA") {
+    return NextResponse.redirect("https://amazon.com", 302);
+  }
   return NextResponse.next();
 }
 
