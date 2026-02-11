@@ -81,6 +81,9 @@ export default function HomeClient({ region }) {
             <Link href="/regionContent" className={styles.regionLink}>
               Go to Region Content →
             </Link>
+            <Link href="/stores" className={styles.regionLink}>
+              Go to Stores (US → Amazon, Canada → Apple) →
+            </Link>
           </div>
 
           {loading && <p className={styles.geoStatus}>Loading…</p>}
