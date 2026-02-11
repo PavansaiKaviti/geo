@@ -7,7 +7,7 @@ export default async function StoresPage() {
   const cookieStore = await cookies();
   const regionFromGeo = headersList.get("x-region");
   const regionFromCookie = cookieStore.get("region")?.value?.toLowerCase();
-  const region = regionFromGeo ?? regionFromCookie;
+  const region = regionFromCookie ?? regionFromGeo;
 
   if (region === "us") {
     return (
@@ -17,14 +17,16 @@ export default async function StoresPage() {
           <p className={styles.message}>
             You're in the US region. You can use:
           </p>
-          <a
-            href="https://amazon.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.storeLink}
-          >
-            Amazon.com →
-          </a>
+          <div className={styles.storeLinks}>
+            <a
+              href="https://amazon.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`${styles.storeLink} ${styles.storeLinkAmazon}`}
+            >
+              Amazon.com →
+            </a>
+          </div>
           <Link href="/" className={styles.back}>
             ← Back to home
           </Link>
@@ -41,14 +43,16 @@ export default async function StoresPage() {
           <p className={styles.message}>
             You're in the Canada region. You can use:
           </p>
-          <a
-            href="https://apple.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.storeLink}
-          >
-            Apple.com →
-          </a>
+          <div className={styles.storeLinks}>
+            <a
+              href="https://apple.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`${styles.storeLink} ${styles.storeLinkApple}`}
+            >
+              Apple.com →
+            </a>
+          </div>
           <Link href="/" className={styles.back}>
             ← Back to home
           </Link>

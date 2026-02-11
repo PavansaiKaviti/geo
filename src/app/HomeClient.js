@@ -9,7 +9,7 @@ function setRegionCookie(region) {
   document.cookie = `region=${value}; path=/; max-age=31536000`;
 }
 
-export default function HomeClient({ region }) {
+export default function HomeClient({ region, userSpecifiedRegion }) {
   const [geo, setGeo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -31,8 +31,13 @@ export default function HomeClient({ region }) {
       .finally(() => setLoading(false));
   }, []);
 
-  const regionMessage =
-    region === "us"
+  const effectiveUserSpecified = userSpecifiedRegion ?? requestedRegion;
+
+  const regionMessage = effectiveUserSpecified
+    ? effectiveUserSpecified === "us"
+      ? "User specified US region"
+      : "User specified Canada region"
+    : region === "us"
       ? "You are in US region"
       : region === "ca"
       ? "You're in Canada"
