@@ -13,6 +13,12 @@ export default function HomeClient({ region }) {
   const [geo, setGeo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [requestedRegion, setRequestedRegion] = useState(null);
+
+  const handleSetRegion = (value) => {
+    setRegionCookie(value);
+    setRequestedRegion(value);
+  };
 
   useEffect(() => {
     fetch("/api/geo")
@@ -30,6 +36,13 @@ export default function HomeClient({ region }) {
       ? "You are in US region"
       : region === "ca"
       ? "You're in Canada"
+      : null;
+
+  const requestedMessage =
+    requestedRegion === "us"
+      ? "User requested to use US region"
+      : requestedRegion === "ca"
+      ? "User requested to use Canada region"
       : null;
 
   return (
@@ -50,18 +63,21 @@ export default function HomeClient({ region }) {
               <button
                 type="button"
                 className={styles.regionBtn}
-                onClick={() => setRegionCookie("us")}
+                onClick={() => handleSetRegion("us")}
               >
                 US
               </button>
               <button
                 type="button"
                 className={styles.regionBtn}
-                onClick={() => setRegionCookie("ca")}
+                onClick={() => handleSetRegion("ca")}
               >
                 Canada
               </button>
             </div>
+            {requestedMessage && (
+              <p className={styles.requestedMessage}>{requestedMessage}</p>
+            )}
             <Link href="/regionContent" className={styles.regionLink}>
               Go to Region Content →
             </Link>
