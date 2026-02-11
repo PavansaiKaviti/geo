@@ -5,13 +5,16 @@ export function middleware(request) {
   const geo = geolocation(request);
   const country = geo?.country?.toUpperCase();
 
+  const requestHeaders = new Headers(request.headers);
   if (country === "US") {
-    return NextResponse.redirect("https://apple.com", 302);
+    requestHeaders.set("x-region", "us");
+  } else if (country === "CA") {
+    requestHeaders.set("x-region", "ca");
   }
-  if (country === "CA") {
-    return NextResponse.redirect("https://amazon.com", 302);
-  }
-  return NextResponse.next();
+
+  return NextResponse.next({
+    request: { headers: requestHeaders },
+  });
 }
 
 export const config = {
