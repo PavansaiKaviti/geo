@@ -3,6 +3,12 @@ import type { NextRequest } from "next/server";
 import { geolocation } from "@vercel/functions";
 
 export function proxy(request: NextRequest) {
+  const userPreference = request.cookies.get("site_preference")?.value;
+
+  if (userPreference) {
+    return NextResponse.next();
+  }
+
   const geo = geolocation(request);
   const country = geo?.country?.toUpperCase();
   const userRegion = country === "CA" ? "ca" : country === "US" ? "us" : null;
