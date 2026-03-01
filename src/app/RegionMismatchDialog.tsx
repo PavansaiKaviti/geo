@@ -34,7 +34,7 @@ export default function RegionMismatchDialog({
 
   const handleVisitOther = () => {
     setOpen(false);
-    window.open(visitUrl, "_blank", "noopener,noreferrer");
+    window.location.href = visitUrl;
   };
 
   return (
