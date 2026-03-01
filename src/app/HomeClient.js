@@ -40,15 +40,15 @@ export default function HomeClient({ region, userSpecifiedRegion }) {
     : region === "us"
       ? "You are in US region"
       : region === "ca"
-      ? "You're in Canada"
-      : null;
+        ? "You're in Canada"
+        : null;
 
   const requestedMessage =
     requestedRegion === "us"
       ? "User requested to use US region"
       : requestedRegion === "ca"
-      ? "User requested to use Canada region"
-      : null;
+        ? "User requested to use Canada region"
+        : null;
 
   return (
     <div className={styles.page}>
@@ -97,6 +97,12 @@ export default function HomeClient({ region, userSpecifiedRegion }) {
             <div className={styles.geoCard}>
               <h2>Your location</h2>
               <dl className={styles.geoList}>
+                {geo.ip != null && (
+                  <>
+                    <dt>IP address</dt>
+                    <dd>{geo.ip}</dd>
+                  </>
+                )}
                 {geo.city != null && (
                   <>
                     <dt>City</dt>
@@ -124,9 +130,9 @@ export default function HomeClient({ region, userSpecifiedRegion }) {
                   </>
                 )}
               </dl>
-              {!geo.city && !geo.country && (
+              {!geo.city && !geo.country && !geo.ip && (
                 <p className={styles.geoHint}>
-                  No geo data — run this app on Vercel to see your location.
+                  No geo or IP data — run this app on Vercel to see your location and IP.
                 </p>
               )}
             </div>

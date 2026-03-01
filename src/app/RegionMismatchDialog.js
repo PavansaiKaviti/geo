@@ -29,7 +29,12 @@ export default function RegionMismatchDialog({
   if (!open) return null;
 
   return (
-    <div className={styles.overlay} role="dialog" aria-modal="true" aria-labelledby="region-dialog-title">
+    <div
+      className={styles.overlay}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="region-dialog-title"
+    >
       <div className={styles.dialog}>
         <h2 id="region-dialog-title" className={styles.title}>
           {isUserUS ? "US region" : "Canada region"}

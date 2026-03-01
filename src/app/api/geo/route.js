@@ -1,6 +1,7 @@
-import { geolocation } from "@vercel/functions";
+import { geolocation, ipAddress } from "@vercel/functions";
 
 export async function GET(request) {
   const geo = geolocation(request);
-  return Response.json(geo);
+  const ip = ipAddress(request);
+  return Response.json({ ...geo, ip: ip ?? null });
 }

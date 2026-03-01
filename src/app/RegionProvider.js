@@ -3,17 +3,18 @@ import RegionMismatchDialog from "./RegionMismatchDialog";
 
 export default async function RegionProvider({ children }) {
   const headersList = await headers();
-  const showDialog = headersList.get("x-show-region-dialog") === "true";
+  const hasMismatch = headersList.get("x-region-mismatch") === "true";
   const userRegion = headersList.get("x-user-region") || null;
   const siteRegion = headersList.get("x-site-region") || null;
 
   return (
     <>
       {children}
-      {showDialog && userRegion && (
+      {hasMismatch && userRegion && siteRegion && (
         <RegionMismatchDialog
           userRegion={userRegion}
           siteRegion={siteRegion}
+          isMismatch={true}
         />
       )}
     </>

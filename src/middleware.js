@@ -16,8 +16,13 @@ function getSiteRegion(request) {
 export function middleware(request) {
   const geo = geolocation(request);
   const country = geo?.country?.toUpperCase();
+
+  const testRegion = request.nextUrl?.searchParams?.get("test_region")?.toLowerCase();
+  const userRegionFromGeo = country === "CA" ? "ca" : country === "US" ? "us" : null;
+  const userRegion =
+    testRegion === "us" || testRegion === "ca" ? testRegion : userRegionFromGeo;
+
   const siteRegion = getSiteRegion(request);
-  const userRegion = country === "CA" ? "ca" : country === "US" ? "us" : null;
 
   const isMismatch =
     (siteRegion === "ca" && userRegion === "us") ||
@@ -30,13 +35,16 @@ export function middleware(request) {
 
   if (isMismatch) {
     requestHeaders.set("x-region-mismatch", "true");
-  }
-
-  if (userRegion === "us" || userRegion === "ca") {
-    requestHeaders.set("x-show-region-dialog", "true");
     return NextResponse.next({
       request: { headers: requestHeaders },
     });
+  }
+
+  if (userRegion === "us") {
+    return NextResponse.redirect(US_STORE_URL, 302);
+  }
+  if (userRegion === "ca") {
+    return NextResponse.redirect(CA_STORE_URL, 302);
   }
 
   return NextResponse.next({
