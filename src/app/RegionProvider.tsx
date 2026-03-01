@@ -1,7 +1,11 @@
 import { headers } from "next/headers";
 import RegionMismatchDialog from "./RegionMismatchDialog";
 
-export default async function RegionProvider({ children }) {
+export default async function RegionProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const headersList = await headers();
   const hasMismatch = headersList.get("x-region-mismatch") === "true";
   const userRegion = headersList.get("x-user-region") || null;
@@ -14,7 +18,6 @@ export default async function RegionProvider({ children }) {
         <RegionMismatchDialog
           userRegion={userRegion}
           siteRegion={siteRegion}
-          isMismatch={true}
         />
       )}
     </>

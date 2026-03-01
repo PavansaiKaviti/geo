@@ -1,36 +1,32 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Geo
 
-## Getting Started
+Next.js + TypeScript app with region mismatch dialog (MUI) and IP on home.
 
-First, run the development server:
+## Run
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Flow
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. User visits with **`?site_region=ca`** (or `site_region=us`) from a different region.
+2. Middleware reads Vercel geo and sets **`x-region-mismatch: true`** when region doesn’t match.
+3. **RegionProvider** reads headers and renders **RegionMismatchDialog** (MUI).
+4. User sees: **“Looking for Canada?”** (or US) with **Visit Canada** / **Visit US** and **Stay here**.
 
-## Learn More
+## Test on Vercel
 
-To learn more about Next.js, take a look at the following resources:
+- **US user on CA site:** share `https://your-app.vercel.app/?site_region=ca` — they see the “Looking for Canada?” dialog.
+- **CA user on US site:** share `https://your-app.vercel.app/?site_region=us` — they see the “Looking for US?” dialog.
+- **Home page** shows **IP address** when deployed on Vercel.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Scripts
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `npm run dev` – start dev server
+- `npm run build` – build for production
+- `npm run start` – start production server
+- `npm run lint` – run ESLint
