@@ -8,9 +8,8 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 
-const US_STORE_URL =
-  "https://myecommerce-bahy2mt3k-pavansai-kavitis-projects.vercel.app/";
-const CA_STORE_URL = "https://myecommerce-sigma.vercel.app/";
+const US_STORE_URL = "https://geo-two-xi.vercel.app/?site_region=us";
+const CA_STORE_URL = "https://geo-two-xi.vercel.app/?site_region=ca";
 
 interface RegionMismatchDialogProps {
   userRegion: string;
