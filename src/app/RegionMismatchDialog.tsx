@@ -33,8 +33,6 @@ export default function RegionMismatchDialog({
   };
 
   const handleVisitOther = () => {
-    const regionVisiting = siteRegion === "ca" ? "us" : "ca";
-    document.cookie = `site_preference=${regionVisiting}; path=/; max-age=31536000`;
     setOpen(false);
     window.open(visitUrl, "_blank", "noopener,noreferrer");
   };
