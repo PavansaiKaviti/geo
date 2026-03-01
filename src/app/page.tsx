@@ -49,12 +49,22 @@ export default function Home() {
         </p>
       )}
 
-      <section style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12 }}>
+      <section
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: 12,
+        }}
+      >
         <h2 style={{ fontSize: 18, fontWeight: 600, margin: 0 }}>Region</h2>
         <div style={{ display: "flex", gap: 12 }}>
           <button
             type="button"
-            onClick={() => { window.location.href = US_URL; }}
+            onClick={() => {
+              document.cookie = "site_preference=us; path=/; max-age=31536000";
+              window.location.href = US_URL;
+            }}
             style={{
               padding: "12px 24px",
               fontSize: 16,
@@ -70,7 +80,10 @@ export default function Home() {
           </button>
           <button
             type="button"
-            onClick={() => { window.location.href = CA_URL; }}
+            onClick={() => {
+              document.cookie = "site_preference=ca; path=/; max-age=31536000";
+              window.location.href = CA_URL;
+            }}
             style={{
               padding: "12px 24px",
               fontSize: 16,
