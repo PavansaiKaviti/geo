@@ -23,15 +23,23 @@ export default function RegionMismatchDialog({
 }: RegionMismatchDialogProps) {
   const [open, setOpen] = useState(true);
 
-  const isUserUS = userRegion === "us";
-  const lookingFor = siteRegion === "ca" ? "Canada" : "US";
-  const visitUrl = siteRegion === "ca" ? CA_STORE_URL : US_STORE_URL;
-  const visitLabel = siteRegion === "ca" ? "Visit Canada" : "Visit US";
+  const lookingFor = userRegion === "us" ? "US" : "Canada";
+  const visitUrl = userRegion === "us" ? US_STORE_URL : CA_STORE_URL;
+  const visitLabel = userRegion === "us" ? "Visit US" : "Visit Canada";
 
-  const handleClose = () => setOpen(false);
+  const handleStayHere = () => {
+    document.cookie = `site_preference=${siteRegion}; path=/; max-age=31536000`;
+    setOpen(false);
+  };
+
+  const handleVisitOther = () => {
+    document.cookie = `site_preference=${userRegion}; path=/; max-age=31536000`;
+    setOpen(false);
+    window.open(visitUrl, "_blank", "noopener,noreferrer");
+  };
 
   return (
-    <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
+    <Dialog open={open} onClose={handleStayHere} maxWidth="sm" fullWidth>
       <DialogTitle>Looking for {lookingFor}?</DialogTitle>
       <DialogContent>
         <DialogContentText>
@@ -39,10 +47,8 @@ export default function RegionMismatchDialog({
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button href={visitUrl} target="_blank" rel="noopener noreferrer">
-          {visitLabel}
-        </Button>
-        <Button onClick={handleClose} variant="contained">
+        <Button onClick={handleVisitOther}>{visitLabel}</Button>
+        <Button onClick={handleStayHere} variant="contained">
           Stay here
         </Button>
       </DialogActions>
