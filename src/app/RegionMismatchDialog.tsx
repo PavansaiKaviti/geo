@@ -23,9 +23,10 @@ export default function RegionMismatchDialog({
 }: RegionMismatchDialogProps) {
   const [open, setOpen] = useState(true);
 
-  const lookingFor = userRegion === "us" ? "US" : "Canada";
-  const visitUrl = userRegion === "us" ? US_STORE_URL : CA_STORE_URL;
-  const visitLabel = userRegion === "us" ? "Visit US" : "Visit Canada";
+  // On CA site → offer US. On US site → offer Canada. (Derive from site so it’s correct even if user header is wrong.)
+  const lookingFor = siteRegion === "ca" ? "US" : "Canada";
+  const visitUrl = siteRegion === "ca" ? US_STORE_URL : CA_STORE_URL;
+  const visitLabel = siteRegion === "ca" ? "Visit US" : "Visit Canada";
 
   const handleStayHere = () => {
     document.cookie = `site_preference=${siteRegion}; path=/; max-age=31536000`;
@@ -33,7 +34,8 @@ export default function RegionMismatchDialog({
   };
 
   const handleVisitOther = () => {
-    document.cookie = `site_preference=${userRegion}; path=/; max-age=31536000`;
+    const regionVisiting = siteRegion === "ca" ? "us" : "ca";
+    document.cookie = `site_preference=${regionVisiting}; path=/; max-age=31536000`;
     setOpen(false);
     window.open(visitUrl, "_blank", "noopener,noreferrer");
   };
